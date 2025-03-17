@@ -1,9 +1,14 @@
 package com.devsuperior.dscommerce.dto;
 
+import com.devsuperior.dscommerce.entities.Category;
 import com.devsuperior.dscommerce.entities.Product;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ProductDTO {
@@ -17,6 +22,9 @@ public class ProductDTO {
     @NotBlank(message = "O campo descrição é requerido")
     private String description;
     private String imgUrl;
+
+    @NotEmpty(message = "Deve ter pelo menos uma categoria")
+    private List<CategoryDTO> categories = new ArrayList<>();
 
     public ProductDTO() {}
 
@@ -34,7 +42,15 @@ public class ProductDTO {
         price = entity.getPrice();
         description = entity.getDescription();
         imgUrl = entity.getImgUrl();
+        for (Category category : entity.getCategories()) {
+            categories.add(new CategoryDTO(category));
+        }
     }
+
+    public List<CategoryDTO> getCategories() {
+        return categories;
+    }
+
     public String getImgUrl() {
         return imgUrl;
     }
